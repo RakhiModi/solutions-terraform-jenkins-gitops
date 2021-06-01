@@ -92,9 +92,13 @@ module "jenkins-gke" {
   node_pools = [
     {
       name         = "butler-pool"
-      min_count    = 3
-      max_count    = 6
+      min_count    = 1
+      max_count    = 3
       auto_upgrade = true
+      preemptible                    = true
+
+
+      
     }
   ]
 }
@@ -188,7 +192,8 @@ data "local_file" "helm_chart_values" {
 
 resource "helm_release" "jenkins" {
   name       = "jenkins"
-  repository = "https://kubernetes-charts.storage.googleapis.com"
+  #repository = "https://kubernetes-charts.storage.googleapis.com"
+  repository = "https://charts.helm.sh/stable"
   chart      = "jenkins"
   version    = "1.9.18"
   timeout    = 1200
